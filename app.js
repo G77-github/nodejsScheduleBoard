@@ -7,14 +7,21 @@ app.set("view engine", "ejs");
 
 app.use("/js", express.static(__dirname + "/node_modules/bootstrap/dist/js"));
 app.use("/css", express.static(__dirname + "/node_modules/bootstrap/dist/css"));
+app.use("/js", express.static(__dirname + "/node_modules/jquery/dist"));
+
 
 app.use(express.urlencoded({extended: true}));
 
 var indexRouter = require("./router/index");
 var resultRouter = require("./router/result");
+var uploadRouter = require("./router/upload");
+
+
 
 app.use("/", indexRouter);
 app.use("/", resultRouter);
+app.use("/", uploadRouter);
+
 
 //라우터로 바꿈
 /*
