@@ -5,7 +5,7 @@ const db = require("../configs/db");
 router.use(express.urlencoded({extended: true}));
 
 router.get("/board/write", (req,res)=>{
-    res.render("write.ejs");
+    res.render("board/write.ejs");
 });
 
 router.post("/board/write", (req,res)=>{
@@ -22,6 +22,25 @@ router.post("/board/write", (req,res)=>{
         } else{
             res.redirect("/board/write");
         }
+    });
+});
+
+router.get("/board", (req,res)=>{
+    var sql = "select * from board";
+    db.query(sql, (err,rows)=>{
+        res.render("board/index.ejs",{
+            rows: rows
+        });
+    });
+});
+
+router.get("/board/view/:id", (req, res)=>{
+    var id = req.params.id;
+    var sql = "select * from board where id=?";
+    db.query(sql, [id], (err, rows)=>{
+        res.render("board/detail.ejs", {
+            result: rows[0]
+        });
     });
 });
 
