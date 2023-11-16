@@ -15,35 +15,13 @@ app.use(express.urlencoded({extended: true}));
 var indexRouter = require("./router/index");
 var resultRouter = require("./router/result");
 var uploadRouter = require("./router/upload");
-
+var boardRouter = require("./router/board");
 
 
 app.use("/", indexRouter);
 app.use("/", resultRouter);
 app.use("/", uploadRouter);
-
-
-//라우터로 바꿈
-/*
-app.get("/", (req,res)=>{
-    res.render("index.ejs");
-});
-
-app.get("/result", (req,res)=>{
-    var val1 = req.query.val1;
-    var val2 = req.query.val2;
-    res.render("result.ejs", {"val1": val1, "val2": val2});
-});
-
-app.post("/result", (req,res)=>{
-    var val1 = req.body.val1;
-    var val2 = req.body.val2;
-    res.render("result.ejs",{
-        "val1": val1,
-        "val2": val2,
-    });
-});
-*/
+app.use("/", boardRouter);
 
 
 app.listen(5222, ()=>{
