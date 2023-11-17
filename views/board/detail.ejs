@@ -5,38 +5,96 @@
 
     <div class="container">
         <div class="d-flex justify-content-md-between mb-3">
-            <p>작성일 : <%=new Date(result.date).toLocaleDateString()%></p>
-            <p>게시글 번호 : <%=result.id%></p>
-            <div class="btn-group">
-                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="flase"></button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/board/modify/<%=result.id%>">수정</a></li>
-                    <li><a class="dropdown-item" href="/board/delete/<%=result.id%>">삭제</a></li>
-                </ul>
+            <div class="justify-content-md-start">
+                <div class="row">
+                    <div class="col-md-auto">작성일 : <%=new Date(result[0].date).toLocaleDateString()%></div>
+                    <div class="col-md-auto">게시글 번호 : <%=result[0].id%></div>
+                </div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="/board/modify/<%=result.id%>" class="btn btn-primary">수정</a>
+                <a href="/board/delete/<%=result.id%>" class="btn btn-primary">삭제</a>
             </div>
         </div>
-        <div class="mb-3 row">
+        <div class="mb-3 row border">
             <label for="staticEmail" class="col-sm-2 col-form-label">글쓴이</label>
             <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=result.writer%>">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=result[0].writer%>">
             </div>
         </div>
-        <div class="mb-3 row">
+        <div class="mb-3 row border">
             <label for="staticEmail" class="col-sm-2 col-form-label">제목 : </label>
             <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=result.title%>">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=result[0].title%>">
             </div>
         </div>
-        <div class="mb-3 row">
+        <div class="mb-3 row border">
             <label for="staticEmail" class="col-sm-2 col-form-label">내용: </label>
             <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=result.content%>">
+  <!--              <textarea readonly class="form-control-plaintext" style="height:auto;"><%=result.content%></textarea> -->
+                <div class="form-control-plaintext" style="height:auto; overflow-y: auto;" contenteditable="false"><%=result[0].content%></div>
             </div>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <a href="/board" class="btn btn-primary">돌아가기</a>
         </div>
     </div>
+
+    <div class="container">
+        <h3>댓글</h3>
+        <table class="table table-border text-center">
+            <thead>
+                <tr>
+                    <th scope="col">작성자</th>
+                    <th scope="col">내용</th>
+                    <th scope="col">작성일</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if(result.length === 1) { %>
+                    <tr>
+                        <td>댓글이 없습니다</td>
+                    </tr>
+                <% } else{ %>
+                    <% for(let i =0; i<result.length;i++) { %>
+                        
+                        <tr>
+                            <td><%=result[i].cwriter%></td>
+                            <td><%=result[i].ccontent%></td>
+                            <td><%=new Date(result[i].cdate).toLocaleDateString()%></td>
+                        </tr>
+                    <%}%>
+                <%}%>
+            </tbody>
+        </table>
+
+        <form action="/board/view/<%=result[0].id%>" method="post">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+  <!--                      <label for="exampleFormControlInput1" class="form-lable">작성자</label> -->
+                        <input type="text" class="form-control" placeholder="작성자" name="cwriter">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+  <!--                      <label for="exampleFormControlInput1" class="form-lable">비밀번호</label> -->
+                        <input type="password" class="form-control" placeholder="비밀번호" name="cpassword">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <input type="submit" class="btn btn-primary" value="댓글달기">
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" placeholder="내용" name="ccontent">
+            </div>
+        </form>
+    </div>
+
+
 </div>
 
 <%- include("../include/footer") -%>

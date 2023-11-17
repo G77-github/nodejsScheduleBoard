@@ -33,14 +33,43 @@ router.get("/board", (req,res)=>{
         });
     });
 });
-
+/*
 router.get("/board/view/:id", (req, res)=>{
     var id = req.params.id;
-    var sql = "select * from board where id=?";
+    var sql = "SELECT board.*, boardcomment.* FROM board LEFT JOIN boardcomment ON board.id = boardcomment.bid where id=?;";
     db.query(sql, [id], (err, rows)=>{
         res.render("board/detail.ejs", {
-            result: rows[0]
+            result: rows
         });
+    });
+});
+*/
+router.get("/board/view/:id", (req, res)=>{
+    var id = req.params.id;
+    var sql = "SELECT board.*, boardcomment.* FROM board LEFT JOIN boardcomment ON board.id = boardcomment.bid where board.id=?";
+    db.query(sql, [id], (err, rows)=>{
+        console.log(rows);
+        res.render("board/detail.ejs", {
+            result: rows
+        });
+    });
+});
+
+
+router.post("/board/view/:id", (req,res)=>{
+    var cwriter = req.body.cwriter;
+    var cpassword = req.body.cpassword;
+    var bid = req.params.id;
+    var ccontent = req.body.ccontent;
+    var data = [cwriter, cpassword, bid, ccontent, ];
+    var sql = "insert into boardcomment(cid, cwriter, cpassword, bid, ccontent, cdate) value(null,?,?,?,?,now())";
+    db.query(sql, data, (err,result)=>{
+        if(err){
+            console.error(err);
+            res.sendStatus(500);
+        } else{
+            res.redirect(`/board/view/${bid}`);
+        }
     });
 });
 
@@ -77,6 +106,7 @@ router.post("/board/:type/:id", (req,res)=>{
 
         var temp = rows[0].password;
         if(temp != password){
+            console.log("왜 여기로 라우팅?");
             res.render("board/error");
 
         } else{
