@@ -1,56 +1,83 @@
-<%- include("include/header") -%>
+<%- include("./include/header") -%>
 
-<div class="container w-50">
-    <div class="form-floating mb-3">
-        <h1>메인페이지</h1>
-    </div>
+    <div class="container mt-3">
 
-    <h3>메소드 get으로 보내기</h3>
+        <!-- 사용자 정보 -->
+        <div class="user-info">
+            <p>Welcome,  userName </p>
+        </div>
 
-    <form action="result" method="get">
-    <div class="form-floating mb-3">
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" name="val1">
-            <label for="floatingInput">아 이게 칸안에</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" name="val2">
-            <label for="floatingPassword">값2</label>
-        </div>
-        </div>
-        <div class="d-grid gap-2 mb-3">
-            <button type="submit" class="btn btn-primary">전송하기</button>
-        </div>
-        </form>
+        <div class="tab-container">
 
-        <h3>메소드 post로 보내기</h3>
-        <form action="result" method="post">
-            <div class="form-floating mb-3">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="val1">
-                    <label for="floatingInput">값 1</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="val2">
-                    <label for="floatingInput">ㅁㄴㅇㄴㅁ</label>
+            <div class="tab-box">
+                <div class="nav flex-row">
+
+                    <table class="table table-border text-center">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="border-right"><a class="nav-link <%= activeTab === 'home' ? 'active' : '' %>" href="/">Home</a></th>
+                                <th scope="col" class="border-right"><a class="nav-link <%= activeTab === 'about' ? 'active' : '' %>" href="/tab/about">About</a></th>
+                                <th scope="col" class="border-right"><a class="nav-link <%= activeTab === 'contact' ? 'active' : '' %>" href="/tab/contact">Contact</a></th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
-            <div class="d-grid gap-2 mb-3">
-                <input type="submit" class="btn btn-primary" value="전송">
-            </div>
-        </form>
 
+            <div class="content-box">
 
-        <form action="upload" method="post" enctype="multipart/form-data">
-            <h3>파일 업로드</h3>
-            <div class="input-group mb-3">
-                <input type="file" class="form-control" name="file">
+                <% if (activeTab === 'home') { %>
+                    <h2>Home Content</h2>
+                    <p>This is the home page content.</p>
+                <% } else if (activeTab === 'about') { %>
+                    <h2>About Content</h2>
+
+                    <div class="container">
+                        <h3>게시판 리스트</h3>
+                        <table class="table table-border text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">번호</th>
+                                    <th scope="col">작성자</th>
+                                    <th scope="col">제목</th>
+                                    <th scope="col">작성일</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if(rows.length == 0){ %>
+                                    <tr>
+                                        <td colspan="4">게시글이 없습니다.</td>
+                                    </tr>
+                                    <%} %>
+                                <% for(let i = 0; i<rows.length;i++) { %>
+                                    <% let result = rows[i]; %>
+                                
+                                <tr>
+                                    <td><%=i+1%></td>
+                                    <td><%=result.writer%></td>
+                                    <td class="w-50"><a class="text-decoration-none" href="/board/view/<%=result.id%>"><%= result.title%></a></td>
+                                    <td><%=new Date(result.date).toLocaleDateString()%></td>
+                                </tr>
+                                <%}%>
+                            </tbody>
+                        </table>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="/board/write" class="btn btn-primary">글쓰기</a>
+                        </div>
+                    </div>
+                    
+
+                    <p>This is the about page content.</p>
+                <% } else if (activeTab === 'contact') { %>
+                    <h2>Contact Content</h2>
+                    <p>This is the contact page content.</p>
+                <% } %>
+
             </div>
-            <div class="d-grid gap-2 mb-3">
-                <input type="submit" class="btn btn-primary" value="전송하기">
-            </div>
-        </form>
+
+        </div>
+
     </div>
-</div>
 
-<%- include("include/footer") -%>
+
+<%- include("./include/footer") -%>

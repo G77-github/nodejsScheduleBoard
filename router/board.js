@@ -48,7 +48,6 @@ router.get("/board/view/:id", (req, res)=>{
     var id = req.params.id;
     var sql = "SELECT board.*, boardcomment.* FROM board LEFT JOIN boardcomment ON board.id = boardcomment.bid where board.id=?";
     db.query(sql, [id], (err, rows)=>{
-        console.log(rows);
         res.render("board/detail.ejs", {
             result: rows
         });
