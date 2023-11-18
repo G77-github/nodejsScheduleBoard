@@ -16,12 +16,13 @@ var indexRouter = require("./router/index");
 var resultRouter = require("./router/result");
 var uploadRouter = require("./router/upload");
 var boardRouter = require("./router/board");
-
+var scheduleRouter = require("./router/schedule")
 
 app.use("/", indexRouter);
 app.use("/", resultRouter);
 app.use("/", uploadRouter);
 app.use("/", boardRouter);
+app.use("/", scheduleRouter);
 
 
 app.listen(5222, ()=>{
