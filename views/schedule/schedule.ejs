@@ -49,8 +49,8 @@
               var events = calendar.getEvents().map(function(event){
                 return{
                   title: event.title,
-                  start: event.start.toISOString(),
-                  end: event.end ? event.end.toISOString() : null,
+                  start: event.start.toString(),
+                  end: event.end ? event.end.toString() : null,
                   allDay: event.allDay
                 };
               });
@@ -111,6 +111,25 @@
       });
       // 캘린더 랜더링
       calendar.render();
+
+      $.ajax({
+        url: "/schedule/data",
+        type: "GET",
+        success: function(events){
+          events.forEach(function(event){
+            calendar.addEvent({
+              title: event.title,
+              start: event.start,
+              end: event.end,
+              allDay: event.allDay
+            });
+          });
+        },
+        error: function(xhr, status,error){
+          console.error(error);
+          alert("일정 로드 실패");
+        }
+      });
     });
   })();
 </script>
