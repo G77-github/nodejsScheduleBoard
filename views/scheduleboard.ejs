@@ -1,0 +1,32 @@
+<%- include("./include/header") -%>
+
+<div class="container">
+    <h3>일정 목록</h3>
+    <table class="table table-border text-center">
+        <tbody>
+            <% if(rows.length === 0 || null ){ %>
+                <tr>
+                    <td colspan="4">일정이 없습니다</td>
+                </tr>
+            <%} else {%>
+                <% for(let i =0; i<rows.length;i++){ %>
+                    <% let result = rows[i]; %>
+                    <form action="/temp" method="post">
+                        <tr>
+                            <td>
+                                <p>일정: <%=result.id%> <%=result.title%></p>
+                                <p>참가자: <%=result.pparticipants%></p>
+                                <input type="hidden" name="scheduleId" value="<%=result.id%>"> 
+                                <input type="hidden" name="scheduleTitle" value="<%=result.title%>"> 
+                                <input type="hidden" name="participants" value="<%=result.pparticipants%>"> 
+                                <input type="submit" class="btn btn-primary" value="참가">
+                            </td>
+                        </tr>
+                    </form>
+                <%}%>
+            <%}%>
+        </tbody>
+    </table>
+</div>
+
+<%- include("./include/footer") -%>

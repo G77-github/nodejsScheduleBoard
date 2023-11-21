@@ -30,7 +30,7 @@ router.post("/", async (req,res)=>{
 
             if(existEvents.length === 0){
                 await new Promise((resolve, reject)=>{
-                    db.query(sql,[event.title, start, end, event.allDay], (error, result, fields)=>{
+                    db.query(insertSql,[event.title, start, end, event.allDay], (error, result, fields)=>{
                         if(error){
                             reject(error);
                         } else{
