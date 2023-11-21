@@ -6,10 +6,38 @@ const authMiddleware = require("../middlewares/auth");
 
 
 router.get("/", authMiddleware, (req,res)=>{
-    res.render('index', {activeTab: "home", username: req.session.username });
+
+    var sql = "select * from schedules";
+    db.query(sql, (err, rows)=>{
+        console.log(rows);
+        res.render("index",{
+            activeTab: "home",
+            username: req.session.username,
+            rows: rows
+        });
+    });
 });
 
-router.get("/tab/:tabName", (req,res)=>{
+router.post("/", (req,res)=>{
+    var scheduleId = parseInt(req.body.scheduleId);
+    var schduleTitle = req.body.scheduleTitle;
+    var participant = req.session.username;
+    var nowParticipants = req.body.participants;
+    var participants = nowParticipants + " " + participant;
+    var data = [scheduleId, schduleTitle, participants];
+    console.log(data);
+
+    var sql = "update schedules set pparticipants =? where id= ?";
+    db.query(sql, [participants, scheduleId], (err, result)=>{
+        if(err){
+            console.error(err);
+        } else{
+            res.redirect("/");
+        }
+    });
+});
+
+router.get("/tab/:tabName", authMiddleware, (req,res)=>{
     const tabName = req.params.tabName
     var sql = "select * from board";
     db.query(sql, (err, rows)=>{
@@ -24,7 +52,7 @@ router.get("/tab/:tabName", (req,res)=>{
 
 router.get("/temp", (req,res)=>{
 
-    var sql = "select * from schedules inner join participants on schedules.id = participants.pid";
+    var sql = "select * from schedules";
     db.query(sql, (err, rows)=>{
         console.log(rows);
         res.render("scheduleboard",{
@@ -42,30 +70,12 @@ router.post("/temp", (req,res)=>{
     var data = [scheduleId, schduleTitle, participants];
     console.log(data);
 
-    var checkSql = "select * from participants where pid =?";
-    db.query(checkSql, scheduleId, (err,result)=>{
+    var sql = "update schedules set pparticipants =? where id= ?";
+    db.query(sql, [participants, scheduleId], (err, result)=>{
         if(err){
             console.error(err);
         } else{
-            if(result.length >0){
-                var updateSql = "update participants set pparticipants =? where pid =?";
-                db.query(updateSql, [participants, scheduleId], (err)=>{
-                    if(err){
-                        console.error(err);
-                    } else{
-                        res.redirect("/temp");
-                    }
-                });
-            } else{
-                var insertSql = "insert into participants(pid, ptitle, pparticipants) values(?,?,?)";
-                db.query(insertSql, data, (err)=>{
-                    if(err){
-                        console.error(err);
-                    } else{
-                        res.redirect("/temp");
-                    }
-                });
-            }
+            res.redirect("/temp");
         }
     });
 });

@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const db = require("../configs/db");
 const moment = require("moment");
+const authMiddleware = require("../middlewares/auth");
 
-router.get("/", (req,res)=>{
+router.get("/", authMiddleware, (req,res)=>{
     res.render("schedule/schedule.ejs");
 });
 
