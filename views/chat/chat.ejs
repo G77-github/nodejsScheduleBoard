@@ -1,0 +1,47 @@
+<%- include("../include/header") -%>
+<div style="margin: 10%;">
+    <div id="chatBox">
+
+    </div>
+
+    <div class="inputGroup" style="display: flex; align-items: center;justify-content: space-between;">
+        <input type="text" class="form-control" id="chatInput" style="flex: 1; margin-right:10px;">
+        <button class="btn btn-primary" id="sendButton">전송</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+
+        function sendMessage(){
+            var msg =  "<%=username%>"+ " : " + document.getElementById("chatInput").value;
+            socket.emit("chat message", msg);
+            document.getElementById("chatInput").value ="";
+        }
+
+        document.getElementById("sendButton").onclick = sendMessage;
+
+        document.getElementById("chatInput").addEventListener("keydown", (event)=>{
+            if(event.key === "Enter"){
+                sendMessage();
+                event.preventDefault();
+            }
+        });
+
+        socket.on("connect", ()=>{
+            var item = document.createElement("li");
+            item.textContent = "채팅방에 입장했습니다";
+            document.getElementById("chatBox").appendChild(item);
+            window.scrollTo(0,document.body.scrollHeight);
+        });
+
+        socket.on("chat message", (msg)=>{
+            var item = document.createElement("li");
+            item.textContent = msg;
+            item.className = "messageItem";
+            document.getElementById("chatBox").appendChild(item);
+            window.scrollTo(0,document.body.scrollHeight);
+        });
+    </script>
+</div>
+<%- include("../include/footer") -%>

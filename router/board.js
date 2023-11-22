@@ -5,7 +5,9 @@ const db = require("../configs/db");
 router.use(express.urlencoded({extended: true}));
 
 router.get("/board/write", (req,res)=>{
-    res.render("board/write.ejs");
+    res.render("board/write.ejs", {
+        username: req.session.username
+    });
 });
 
 router.post("/board/write", (req,res)=>{
