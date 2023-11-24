@@ -14,19 +14,20 @@ router.post("/login", (req,res)=>{
     var inputPassword = req.body.password;
     var sql = "select * from members where mname = ?";
 
+    console.log(req.body);
+
     db.query(sql, [inputName], (err, rows)=>{
         if(rows.length === 0){
-            res.redirect("/login");
+            res.json({success: false, message: "아이디 혹은 비밀번호를 잘못 입력했습니다"});
         } else{
             bcrypt.compare(inputPassword, rows[0].mpassword, (err, result)=>{
                 if(result){
                     req.session.username = rows[0].mname;
-                    res.redirect("/");
+                    res.json({success: true});
                 } else{
-                    res.redirect("/login");
+                    res.json({success: false, message: "아이디 혹은 비밀번호를 잘못 입력했습니다"});
                 }
             });
-
         }
     });
 });

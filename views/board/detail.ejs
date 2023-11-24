@@ -12,16 +12,9 @@
             <p>사용자 : <%=username%> </p>
         </div>
     </div>
-    <h3 class="mb-3 mt-3">게시글 보기</h3>
 
     <div class="container">
-        <div class="d-flex justify-content-md-between mb-3">
-            <div class="justify-content-md-start">
-                <div class="row">
-                    <div class="col-md-auto">작성일 : <%=new Date(result[0].date).toLocaleDateString()%></div>
-                    <div class="col-md-auto">게시글 번호 : <%=result[0].id%></div>
-                </div>
-            </div>
+        <div class=" mt-3 mb-3">
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <a href="#" class="btn btn-primary" onclick="modifyPost('<%=result[0].id%>', '<%=username%>', '<%=result[0].writer%>')">수정</a>
                 <form id="deleteForm" method="post" action="/board/delete">
@@ -29,20 +22,26 @@
                     <input type="hidden" name="id" value="<%=result[0].id%>">  
                     <input type="hidden" name="writer" value="<%=result[0].writer%>">
                 </form>
-
-
             </div>
         </div>
+
         <div class="mb-3 row border">
-            <label for="staticEmail" class="col-sm-2 col-form-label">글쓴이</label>
+            <label for="staticEmail" class="col-sm-2 col-form-label">제목 : </label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=result[0].title%>">
+            </div>
+        </div>
+
+        <div class="mb-3 row border">
+            <label for="staticEmail" class="col-sm-2 col-form-label">작성자 : </label>
             <div class="col-sm-10">
                 <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=result[0].writer%>">
             </div>
         </div>
         <div class="mb-3 row border">
-            <label for="staticEmail" class="col-sm-2 col-form-label">제목 : </label>
+            <label for="staticEmail" class="col-sm-2 col-form-label">작성일 : </label>
             <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=result[0].title%>">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%=new Date(result[0].date).toLocaleDateString()%>">
             </div>
         </div>
         <div class="mb-3 row border">
@@ -68,7 +67,7 @@
                 </tr>
             </thead>
             <tbody>
-                <% if(result.length === 0) { %>
+                <% if(result[0].cid === null) { %>
                     <tr>
                         <td>댓글이 없습니다</td>
                     </tr>
@@ -85,7 +84,7 @@
             </tbody>
         </table>
 
-        <form action="/board/view/<%=result[0].id%>" method="post">
+        <form action="/board/detail/<%=result[0].id%>" method="post" onsubmit="return checkComment();">
             <div class="row">
                 <div class="col">
                     <div class="mb-3">
@@ -99,7 +98,7 @@
                 </div>
             </div>
             <div class="mb-3">
-                <input type="text" class="form-control" placeholder="내용" name="ccontent">
+                <input type="text" class="form-control" placeholder="내용" name="ccontent" id="ccontent">
             </div>
         </form>
     </div>

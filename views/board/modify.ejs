@@ -15,27 +15,27 @@
     </div>
 
     <h3 class="mb-3 mt-3">게시글 수정</h3>
-    <form action="/board/modify/<%=result.id%>/ok" method="post">
+    <form action="/board/modify/<%=result.id%>/ok" method="post" onsubmit="return checkTitleAndContent();">
         <div class="row">
             <div class="col">
                 <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-lable">작성자</label>
-                    <input type="text" class="form-control" placeholder="작성자를 입력하시오" name="writer" value="<%=result.writer%>" readonly>
+                    <input type="text" class="form-control" name="writer" value="<%=result.writer%>" readonly>
                 </div>
             </div>
         </div>
 
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-lable">제목</label>
-            <input type="text" class="form-control" placeholder="제목을 입력하시오" name="title" value="<%=result.title%>"> 
+            <input type="text" class="form-control" placeholder="제목을 입력하시오" name="title" id="title" value="<%=result.title%>"> 
         </div>
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-lable">내용</label>
-            <textarea class="form-control" rows="5" placeholder="내용을 입력하시오" name="content"><%=result.content%></textarea>
+            <textarea class="form-control" rows="5" placeholder="내용을 입력하시오" name="content" id="content"><%=result.content%></textarea>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <input type="submit" class="btn btn-primary" value="수정하기">
-            <a href="/board/view/<%=result.id%>" class="btn btn-primary">돌아가기</a>
+            <a href="/board/detail/<%=result.id%>" class="btn btn-primary">돌아가기</a>
         </div>
     </form> 
 </div>

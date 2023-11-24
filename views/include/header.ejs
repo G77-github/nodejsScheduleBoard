@@ -76,6 +76,40 @@
             }
             
         }
+
+        function checkTitleAndContent(){
+        var title = document.getElementById("title").value;
+        var content = document.getElementById("content").value;
+
+        if(!title){
+            alert("제목을 입력하세요");
+            return false;
+        }
+
+        if(!content){
+            alert("내용을 입력하세요");
+            return false;
+        }
+
+        return true;
+        }
+
+        function openWindow(url){
+            var width = window.innerWidth * 0.5;
+            var height = window.innerHeight * 1;
+            window.open(url, "newwindow", "width=" + width + ",height=" + height);
+            return flase;
+        }
+
+        function checkComment(){
+            var ccontent = document.getElementById("ccontent").value;
+
+            if(!ccontent){
+                alert("댓글 내용을 입력하세요");
+                return false;
+            }
+            return true;
+        }
     </script>
 </head>
 <body>

@@ -35,7 +35,7 @@ router.get("/board", (req,res)=>{
     });
 });
 
-router.get("/board/view/:id", (req, res)=>{
+router.get("/board/detail/:id", (req, res)=>{
     var id = req.params.id;
     var sql = "SELECT board.*, boardcomment.* FROM board LEFT JOIN boardcomment ON board.id = boardcomment.bid where board.id=?";
     db.query(sql, [id], (err, rows)=>{
@@ -46,7 +46,7 @@ router.get("/board/view/:id", (req, res)=>{
     });
 });
 
-router.post("/board/view/:id", (req,res)=>{
+router.post("/board/detail/:id", (req,res)=>{
     var cwriter = req.body.cwriter;
     var bid = req.params.id;
     var ccontent = req.body.ccontent;
@@ -57,7 +57,7 @@ router.post("/board/view/:id", (req,res)=>{
             console.error(err);
             res.sendStatus(500);
         } else{
-            res.redirect(`/board/view/${bid}`);
+            res.redirect(`/board/detail/${bid}`);
         }
     });
 });
@@ -91,21 +91,29 @@ router.post("/board/modify/:id/ok", (req,res)=>{
             console.error(err);
             res.sendStatus(500);
         } else{
-            res.redirect(`/board/view/${id}`);
+            res.redirect(`/board/detail/${id}`);
         }
     });
 });
 
 router.post("/board/delete", (req,res)=>{
     var id = req.body.id;
-    var sql = "delete from board where id =?";
+    var sql1 = "delete from board where id =?";
+    var sql2 = "delete from boardcomment where bid =?"
 
-    db.query(sql, [id], (err)=>{
+    db.query(sql1, [id], (err)=>{
         if(err){
             console.error(err);
             res.sendStatus(500);
         } else{
-            res.redirect("/tab/about");
+            db.query(sql2, [id], (err)=>{
+                if(err){
+                    console.error(err);
+                    res.sendStatus(500);
+                } else{
+                    res.redirect("/tab/about");
+                }
+            });
         }
     });
 });
