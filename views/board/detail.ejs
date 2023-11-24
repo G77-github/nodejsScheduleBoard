@@ -1,7 +1,18 @@
 <%- include("../include/header") -%>
 
-<div class="container">
-    <h3 class="mb-3">게시글 보기</h3>
+<div class="container mt-3">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <a href="/schedule" class="btn btn-primary" target="_blank">달력(탭)</a>
+            <a href="#" class="btn btn-secondary" onclick="openWindow('/schedule')">달력(새창)</a>
+            <a href="/chat" class="btn btn-primary" target="_blank">채팅</a>
+            <a href="#" class="btn btn-secondary" onclick="openWindow('/chat')">채팅(새창)</a>
+        </div>
+        <div class="user-info">
+            <p>사용자 : <%=username%> </p>
+        </div>
+    </div>
+    <h3 class="mb-3 mt-3">게시글 보기</h3>
 
     <div class="container">
         <div class="d-flex justify-content-md-between mb-3">

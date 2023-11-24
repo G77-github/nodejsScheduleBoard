@@ -1,8 +1,47 @@
 <%- include("../include/header") -%>
 
-<div class="container">
-    <h3 class="mb-3">게시판 글쓰기</h3>
-    <form action="/board/write" method="post">
+
+<script>
+    function checkTitleAndContent(){
+        var title = document.getElementById("title").value;
+        var content = document.getElementById("content").value;
+
+        if(!title){
+            alert("제목을 입력하세요");
+            return false;
+        }
+
+        if(!content){
+            alert("내용을 입력하세요");
+            return false;
+        }
+
+        return true;
+    }
+
+    function openWindow(url){
+        var width = window.innerWidth * 0.5;
+        var height = window.innerHeight * 1;
+        window.open(url, "newwindow", "width=" + width + ",height=" + height);
+        return flase;
+    }
+
+</script>
+<div class="container mt-3">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <a href="/schedule" class="btn btn-primary" target="_blank">달력(탭)</a>
+            <a href="#" class="btn btn-secondary" onclick="openWindow('/schedule')">달력(새창)</a>
+            <a href="/chat" class="btn btn-primary" target="_blank">채팅</a>
+            <a href="#" class="btn btn-secondary" onclick="openWindow('/chat')">채팅(새창)</a>
+        </div>
+        <div class="user-info">
+            <p>사용자 : <%=username%> </p>
+        </div>
+    </div>
+
+    <h3 class="mb-3 mt-3">게시판 글쓰기</h3>
+    <form action="/board/write" method="post" onsubmit="return checkTitleAndContent();">
         <div class="row">
             <div class="col">
                 <div class="mb-3">
@@ -19,15 +58,15 @@
         </div>
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-lable">제목</label>
-            <input type="text" class="form-control" placeholder="제목입력" name="title">
+            <input type="text" class="form-control" placeholder="제목입력" name="title" id="title">
         </div>
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-lable">내용</label>
-            <textarea class="form-control" rows="5" placeholder="내용을 입력하시오" name="content"></textarea>
+            <textarea class="form-control" rows="5" placeholder="내용을 입력하시오" name="content" id="content"></textarea>
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <input type="submit" class="btn btn-primary" value="작성하기">
-            <a href="/" class="btn btn-primary">돌아가기</a>
+            <a href="/tab/about" class="btn btn-primary">돌아가기</a>
         </div>
 
         </div>
@@ -36,3 +75,4 @@
 </div>
 
 <%- include("../include/footer") -%>
+

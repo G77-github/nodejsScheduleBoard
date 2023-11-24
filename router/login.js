@@ -36,19 +36,28 @@ router.get("/register", (req,res)=>{
 });
 
 router.post("/register", (req,res)=>{
-    var inputName = req.body.id;
+    var inputName = req.body.id.trim();
     var inputPassword = req.body.password;
 
-    bcrypt.hash(inputPassword, saltRounds, (err, hash)=>{
-        var sql = "insert into members(mname, mpassword) values(?,?)";
-        db.query(sql, [inputName, hash], (err, result)=>{
-            if(err){
-                console.error(err);
-            } else{
-                console.log(`${inputName} 회원등록`);
-                res.redirect("/login");
-            }
-        });
+    var checkSql = "select * from members where mname = ?";
+    db.query(checkSql, [inputName], (err,result)=>{
+        if(err){
+            console.error(err);
+        } else if(result.length > 0){
+            res.send("<script type='text/javascript'>alert('해당 아이디는 이미 존재합니다'); window.location='/register'; </script>");
+        } else{
+            bcrypt.hash(inputPassword, saltRounds, (err, hash)=>{
+                var sql = "insert into members(mname, mpassword) values(?,?)";
+                db.query(sql, [inputName, hash], (err, result)=>{
+                    if(err){
+                        console.error(err);
+                    } else{
+                        console.log(`${inputName} 회원등록`);
+                        res.redirect("/login");
+                    }
+                });
+            });
+        }
     });
 });
 

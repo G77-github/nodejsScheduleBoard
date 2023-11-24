@@ -22,7 +22,7 @@ router.post("/board/write", (req,res)=>{
             console.error(err);
             res.sendStatus(500);
         } else{
-            res.redirect("/board/write");
+            res.redirect("/tab/about");
         }
     });
 });
@@ -51,7 +51,8 @@ router.get("/board/view/:id", (req, res)=>{
     var sql = "SELECT board.*, boardcomment.* FROM board LEFT JOIN boardcomment ON board.id = boardcomment.bid where board.id=?";
     db.query(sql, [id], (err, rows)=>{
         res.render("board/detail.ejs", {
-            result: rows
+            result: rows,
+            username: req.session.username
         });
     });
 });
@@ -107,7 +108,6 @@ router.post("/board/:type/:id", (req,res)=>{
 
         var temp = rows[0].password;
         if(temp != password){
-            console.log("왜 여기로 라우팅?");
             res.render("board/error");
 
         } else{
@@ -125,7 +125,7 @@ router.post("/board/:type/:id", (req,res)=>{
             } else if(type == "delete"){
                 var sql ="delete from board where id=?";
                 db.query(sql,[id]);
-                res.redirect("/board");
+                res.redirect("/tab/about");
             }
         }
     });

@@ -37,6 +37,49 @@ router.post("/", (req,res)=>{
     });
 });
 
+router.post("/cancelParticipation", (req,res)=>{
+    var scheduleId = parseInt(req.body.scheduleId);
+    var participant = req.session.username;
+    var nowParticipants = req.body.participants;
+    
+    if(nowParticipants.includes(participant)){
+        nowParticipants = nowParticipants.replace(participant,"");
+    }
+
+    var sql = "update schedules set pparticipants =? where id= ?";
+    db.query(sql, [nowParticipants, scheduleId], (err, result)=>{
+        if(err){
+            console.error(err);
+        } else{
+            res.redirect("/");
+        }
+    });
+});
+
+router.post("/deleteSchedule", (req,res)=>{
+    var scheduleId = parseInt(req.body.scheduleId);
+    var sql = "delete from schedules where id= ?";
+    console.log(scheduleId);
+    db.query(sql, [scheduleId], (err, result)=>{
+        if(err){
+            console.error(err);
+        } else{
+            res.redirect("/");
+        }
+    });
+});
+
+router.post("/deleteAllSchedule", (req,res)=>{
+    var sql = "truncate table schedules";
+    db.query(sql, (err, result)=>{
+        if(err){
+            console.error(err);
+        } else{
+            res.redirect("/");
+        }
+    });
+});
+
 router.get("/tab/:tabName", authMiddleware, (req,res)=>{
     const tabName = req.params.tabName
     var sql = "select * from board";
