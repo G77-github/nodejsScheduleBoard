@@ -92,35 +92,4 @@ router.get("/tab/:tabName", authMiddleware, (req,res)=>{
     });
 });
 
-
-router.get("/temp", (req,res)=>{
-
-    var sql = "select * from schedules";
-    db.query(sql, (err, rows)=>{
-        console.log(rows);
-        res.render("scheduleboard",{
-            rows: rows
-        });
-    });
-});
-
-router.post("/temp", (req,res)=>{
-    var scheduleId = parseInt(req.body.scheduleId);
-    var schduleTitle = req.body.scheduleTitle;
-    var participant = "임의값";
-    var nowParticipants = req.body.participants;
-    var participants = participant + " " + nowParticipants;
-    var data = [scheduleId, schduleTitle, participants];
-    console.log(data);
-
-    var sql = "update schedules set pparticipants =? where id= ?";
-    db.query(sql, [participants, scheduleId], (err, result)=>{
-        if(err){
-            console.error(err);
-        } else{
-            res.redirect("/temp");
-        }
-    });
-});
-
 module.exports = router;

@@ -28,11 +28,6 @@ app.use("/schedule", scheduleRouter);
 app.use("/", loginRouter);
 app.use("/", chatRouter);
 
-/*
-app.listen(5222, ()=>{
-    console.log("서버시작");
-});
-*/
 
 http.listen(5222, ()=>{
     console.log("서버시작");
