@@ -23,8 +23,14 @@
                 </div>
             </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <a href="/board/modify/<%=result[0].id%>" class="btn btn-primary">수정</a>
-                <a href="/board/delete/<%=result[0].id%>" class="btn btn-primary">삭제</a>
+                <a href="#" class="btn btn-primary" onclick="modifyPost('<%=result[0].id%>', '<%=username%>', '<%=result[0].writer%>')">수정</a>
+                <form id="deleteForm" method="post" action="/board/delete">
+                    <button type="button" class="btn btn-primary" onclick="checkDelete('<%=result[0].id%>', '<%=username%>', '<%=result[0].writer%>')">삭제</button>
+                    <input type="hidden" name="id" value="<%=result[0].id%>">  
+                    <input type="hidden" name="writer" value="<%=result[0].writer%>">
+                </form>
+
+
             </div>
         </div>
         <div class="mb-3 row border">
@@ -83,17 +89,10 @@
             <div class="row">
                 <div class="col">
                     <div class="mb-3">
-  <!--                      <label for="exampleFormControlInput1" class="form-lable">작성자</label> -->
-                        <input type="text" class="form-control" placeholder="작성자" name="cwriter">
+                        <input type="text" class="form-control" name="cwriter" value="<%=username%>" readonly>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="mb-3">
-  <!--                      <label for="exampleFormControlInput1" class="form-lable">비밀번호</label> -->
-                        <input type="password" class="form-control" placeholder="비밀번호" name="cpassword">
-                    </div>
-                </div>
-                <div class="col">
+                <div class="col d-flex justify-content-end">
                     <div class="mb-3">
                         <input type="submit" class="btn btn-primary" value="댓글달기">
                     </div>
