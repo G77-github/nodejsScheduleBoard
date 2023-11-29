@@ -59,7 +59,7 @@
                                         
                                             <tr>
                                                 <td>
-                                                    <p>일정: <%=result.title%></p>
+                                                    <p>일정: <%=new Date(result.start).getMonth() +1 + "월" + new Date(result.start).getDate() + "일 " %><%=result.title%></p>
                                                     <p>참가자: <%=result.pparticipants%></p>
                                                     
                                                     <div>
@@ -93,7 +93,7 @@
 
                 <% } else if (activeTab === 'about') { %>
                     <div class="container">
-                        <h3>게시판 리스트</h3>
+                        <h3>게시판</h3>
                         <table class="table table-border text-center">
                             <thead>
                                 <tr>

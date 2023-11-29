@@ -27,6 +27,11 @@ router.post("/", (req,res)=>{
     var data = [scheduleId, schduleTitle, participants];
     console.log(data);
 
+    if(nowParticipants.includes(participant)){
+        res.redirect("/");
+        return;
+    }
+
     var sql = "update schedules set pparticipants =? where id= ?";
     db.query(sql, [participants, scheduleId], (err, result)=>{
         if(err){

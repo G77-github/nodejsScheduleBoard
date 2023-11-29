@@ -4,12 +4,12 @@ const db = require("../configs/db");
 const moment = require("moment");
 const authMiddleware = require("../middlewares/auth");
 
-router.get("/", authMiddleware, (req,res)=>{
+router.get("/schedule", authMiddleware, (req,res)=>{
     res.render("schedule/schedule.ejs");
 });
 
 
-router.post("/", async (req,res)=>{
+router.post("/schedule", async (req,res)=>{
     const { events } = req.body;
     console.log(events);
     var insertSql = "insert into schedules (title, start, end, allDay) values (?, ?, ?, ?)";
@@ -48,7 +48,7 @@ router.post("/", async (req,res)=>{
     }
 });
 
-router.get("/data", (req,res)=>{
+router.get("/schedule/data", (req,res)=>{
     var sql = "select * from schedules";
     db.query(sql, (error, results, fields)=>{
         if(error){

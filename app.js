@@ -12,8 +12,6 @@ app.use("/css", express.static(__dirname + "/node_modules/bootstrap/dist/css"));
 app.use("/js", express.static(__dirname + "/node_modules/jquery/dist"));
 app.use(express.json());
 app.use(expressSession());
-
-
 app.use(express.urlencoded({extended: true}));
 
 var indexRouter = require("./router/index");
@@ -24,7 +22,7 @@ var chatRouter = require("./router/chat")(io);
 
 app.use("/", indexRouter);
 app.use("/", boardRouter);
-app.use("/schedule", scheduleRouter);
+app.use("/", scheduleRouter);
 app.use("/", loginRouter);
 app.use("/", chatRouter);
 

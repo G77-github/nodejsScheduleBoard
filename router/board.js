@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../configs/db");
+const authMiddleware = require("../middlewares/auth");
 
 router.use(express.urlencoded({extended: true}));
 
-router.get("/board/write", (req,res)=>{
+router.get("/board/write", authMiddleware, (req,res)=>{
     res.render("board/write.ejs", {
         username: req.session.username
     });
@@ -26,7 +27,7 @@ router.post("/board/write", (req,res)=>{
     });
 });
 
-router.get("/board", (req,res)=>{
+router.get("/board", authMiddleware, (req,res)=>{
     var sql = "select * from board";
     db.query(sql, (err,rows)=>{
         res.render("board/index.ejs",{
@@ -35,7 +36,7 @@ router.get("/board", (req,res)=>{
     });
 });
 
-router.get("/board/detail/:id", (req, res)=>{
+router.get("/board/detail/:id", authMiddleware, (req, res)=>{
     var id = req.params.id;
     var sql = "SELECT board.*, boardcomment.* FROM board LEFT JOIN boardcomment ON board.id = boardcomment.bid where board.id=?";
     db.query(sql, [id], (err, rows)=>{
@@ -62,7 +63,7 @@ router.post("/board/detail/:id", (req,res)=>{
     });
 });
 
-router.get("/board/modify/:id", (req,res)=>{
+router.get("/board/modify/:id", authMiddleware, (req,res)=>{
     var id = req.params.id;
     sql = "select * from board where id =?";
     db.query(sql, [id],(err, result)=>{
